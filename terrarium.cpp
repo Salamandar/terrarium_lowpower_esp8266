@@ -52,7 +52,7 @@ void Terrarium::detectDS18B20() {
 }
 
 
-void Terrarium::loop(bool day) {
+void Terrarium::updateTemperatures() {
   auto debugPrintSensor = [&](int sensor) {
     Serial.print("sensor ");
     Serial.print(printArray8(sensors[sensor].address));
@@ -66,33 +66,34 @@ void Terrarium::loop(bool day) {
     Serial.println("°C");
   };
 
-  float tempMoyenne = 0;
+  temperatureAverage = 0;
   for (size_t i = 0; i < sensorsCount; i++) {
     sensors[i].temp = ds18b20Sensors.getTempC(sensors[i].address);
-    tempMoyenne += sensors[i].temp;
+    temperatureAverage += sensors[i].temp;
     // debugPrintSensor(i);
   }
 
   if (sensorsCount != 0)
-    tempMoyenne /= sensorsCount;
+    temperatureAverage /= sensorsCount;
   //debugPrintMoyenne(tempMoyenne);
 
+}
 
-  // bool tooHot = day
-  //               ? tempMoyenne > TempHotZoneDayMax
-  //               : tempMoyenne > TempHotZoneNightMax;
-  // bool tooCold = day
-  //                ? tempMoyenne < TempHotZoneDayMin
-  //                : tempMoyenne < TempHotZoneNightMin;
-  //
-  // if (tooCold)
-  //   setTapis(true);
-  // if (tooHot)
-  //   setTapis(false);
-  //
-  // setLampe(day);
+void Terrarium::handleTemperatures(bool day) {
+  bool tooHot = day
+                ? temperatureAverage > TempHotZoneDayMax
+                : temperatureAverage > TempHotZoneNightMax;
+  bool tooCold = day
+                ? temperatureAverage < TempHotZoneDayMin
+                : temperatureAverage < TempHotZoneNightMin;
 
+  if (tooCold)
+    setTapis(true);
+  if (tooHot)
+    setTapis(false);
+  // Do nothing if in between
 
+  setLampe(day);
 }
 
 

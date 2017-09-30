@@ -15,10 +15,16 @@ public:
   Terrarium();
   virtual ~Terrarium () = default;
 
-  void loop(bool day);
 
   void detectDS18B20();
+  void updateTemperatures();
 
+  void handleTemperatures(bool day);
+
+  void loop(bool day) {
+    updateTemperatures();
+    handleTemperatures(day);
+  }
 
 private:
   const int TapisPin   = 0; // IO0/D3 /!\ HIGH Run LOW Flash at reset
@@ -47,6 +53,8 @@ private:
   };
   int sensorsCount;
   Sensor sensors[MaxSensors];
+
+  float temperatureAverage;
 
   void setTapis(bool on);
   void setLampe(bool on);
