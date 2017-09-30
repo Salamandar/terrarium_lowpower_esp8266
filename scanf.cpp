@@ -1,18 +1,10 @@
+#include "scanf.h"
+
 #include <cstdio>
 #include <cstdarg>
 #include <cstring>
 #include <cctype>
 #include <cstdint>
-
-
-// Prototypes
-size_t strcspn (const char *, const char *);
-char * _getbase(char *, int *);
-int _atob (uint32_t *, char *, int);
-int atob(uint32_t *, char *, int);
-int vsscanf (const char *, const char *, va_list);
-int sscanf (const char *, const char *, ...);
-
 
 #define MAXLN 200
 // http://web.mit.edu/10.001/Web/Course_Notes/c_Notes/tips_printf.html
@@ -30,10 +22,10 @@ int sscanf (const char *, const char *, ...);
   question mark \?
 */
 #define ISSPACE " \t\n\r\f\v"
- 
+
 size_t strcspn (const char *p, const char *s){
     int i, j;
- 
+
     for (i = 0; p[i]; i++) {
         for (j = 0; s[j]; j++) {
             if (s[j] == p[i])
@@ -44,7 +36,7 @@ size_t strcspn (const char *p, const char *s){
     }
     return (i);
 }
- 
+
 char * _getbase(char *p, int *basep){
     if (p[0] == '0') {
         switch (p[1]) {
@@ -66,7 +58,7 @@ char * _getbase(char *p, int *basep){
     *basep = 10;
     return (p);
 }
- 
+
 /*
  *  _atob(vp,p,base)
  */
@@ -74,31 +66,31 @@ int _atob (uint32_t *vp, char *p, int base){
     uint32_t value, v1, v2;
     char *q, tmp[20];
     int digit;
- 
+
     if (p[0] == '0' && (p[1] == 'x' || p[1] == 'X')) {
         base = 16;
         p += 2;
     }
- 
+
     if (base == 16 && (q = strchr (p, '.')) != 0) {
         if (q - p > sizeof(tmp) - 1)
             return (0);
- 
+
         strncpy (tmp, p, q - p);
         tmp[q - p] = '\0';
         if (!_atob (&v1, tmp, 16))
             return (0);
- 
+
         q++;
         if (strchr (q, '.'))
             return (0);
- 
+
         if (!_atob (&v2, q, 16))
             return (0);
         *vp = (v1 << 16) + v2;
         return (1);
     }
- 
+
     value = *vp = 0;
     for (; *p; p++) {
         if (*p >= '0' && *p <= '9')
@@ -109,7 +101,7 @@ int _atob (uint32_t *vp, char *p, int base){
             digit = *p - 'A' + 10;
         else
             return (0);
- 
+
         if (digit >= base)
             return (0);
         value *= base;
@@ -118,7 +110,7 @@ int _atob (uint32_t *vp, char *p, int base){
     *vp = value;
     return (1);
 }
- 
+
 /*
  *  atob(vp,p,base)
  *      converts p to binary result in vp, rtn 1 on success
@@ -133,16 +125,16 @@ int atob(uint32_t *vp, char *p, int base){
     }
     return (0);
 }
- 
+
 /*
  *  vsscanf(buf,fmt,ap)
  */
- 
+
 int vsscanf (const char *buf, const char *s, va_list ap){
     uint32_t             count, noassign, width, base, lflag;
     const char     *tc;
     char           *t, tmp[MAXLN];
- 
+
     count = noassign = width = lflag = 0;
     while (*s && *buf) {
     while (isspace (*s))
@@ -220,12 +212,12 @@ int vsscanf (const char *buf, const char *s, va_list ap){
     }
     return (count);
 }
- 
- 
+
+
 int sscanf (const char *buf, const char *fmt, ...){
     int count;
     va_list ap;
-   
+
     va_start (ap, fmt);
     count = vsscanf (buf, fmt, ap);
     va_end (ap);

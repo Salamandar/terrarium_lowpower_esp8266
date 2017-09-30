@@ -25,7 +25,7 @@ void setup() {
   // Start WiFi connection
   WiFi.begin(ssid, password);
 
-  time_setup();
+  // time_setup();
 
   // Start HTTP Server
   server.on("/", handleRoot);
@@ -42,7 +42,7 @@ void setup() {
 
   Serial.println("HTTP server started");
 
-  while(!time_loop()) {};
+  // while(!time_loop()) {};
   terra_setup();
 
 
@@ -54,7 +54,7 @@ void loop() {
   Serial.println("loop");
   // WiFi.forceSleepWake();
   server.handleClient();
-  time_loop();
+  // time_loop();
 
   // terra_loop(isDay());
 
