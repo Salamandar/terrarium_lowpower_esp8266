@@ -1,3 +1,5 @@
+#include "terrarium.h"
+
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <TimeLib.h>
@@ -43,7 +45,7 @@ void setup() {
   while(!time_loop()) {};
   terra_setup();
 
-  
+
   // Force the ESP into client-only mode
   WiFi.mode(WIFI_STA);
 }
@@ -53,7 +55,7 @@ void loop() {
   // WiFi.forceSleepWake();
   server.handleClient();
   time_loop();
-  
+
   // terra_loop(isDay());
 
   // WiFi.forceSleepBegin();
@@ -67,7 +69,6 @@ void handleRoot() {
   serverResponse +=  "<h1>You are connected to the esp8266 !</h1><p>It is " + String(hour()) + ":" + String(minute()) + ":" + String(second()) + ", and this is the " + (isDay() ? "day" : "night") + ".</p>";
 
 
-  
+
   server.send(200, "text/html", serverResponse);
 }
-
