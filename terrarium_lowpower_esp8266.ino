@@ -1,14 +1,18 @@
 #include "terrarium.h"
 #include "datetime.h"
+#include "screen.h"
 
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
 #include <TimeLib.h>
 
+const char* password = "NutellaEtGuizmo";
+const char* ssid     = "LaQueue";
 
-const char* ssid     = "Broceliande";
-const char* password = "avalonisinbroceliande";
-
+//const char* ssid     = "Broceliande";
+//const char* password = "avalonisinbroceliande";
+//const char* ssid     = "Atalante";
+//const char* password = "jeanvigotetlescamelots";
 //const char* host       = "data.sparkfun.com";
 //const char* streamId   = "....................";
 //const char* privateKey = "....................";
@@ -17,6 +21,7 @@ ESP8266WebServer server(80);
 DateTime timeupdater;
 SunSetTime sunsettimeupdater(45.1855779, 5.6996643);
 Terrarium terrarium;
+Screen screen;
 
 
 void setup() {
@@ -60,6 +65,7 @@ void loop() {
   Serial.println("loop");
   // WiFi.forceSleepWake();
   server.handleClient();
+  screen.update();
   // time_loop();
 
   // terra_loop(isDay());
@@ -72,7 +78,9 @@ void loop() {
 
 void handleRoot() {
   String serverResponse;
-  serverResponse +=  "<h1>You are connected to the esp8266 !</h1><p>It is " + String(hour()) + ":" + String(minute()) + ":" + String(second()) + ", and this is the " + (sunsettimeupdater.isDay(now()) ? "day" : "night") + ".</p>";
+  serverResponse +=  "<h1>You are connected to the esp8266 !</h1><p>It is "
+  + String(hour()) + ":" + String(minute()) + ":" + String(second())
+  + ", and this is the " + (sunsettimeupdater.isDay(now()) ? "day" : "night") + ".</p>";
 
 
 
