@@ -6,8 +6,6 @@
 
 const TimeChangeRule CentralEuropeSummerT = {"CEST", Last, Sun, Mar, 2, 120}; // Central European Summer Time
 const TimeChangeRule CentralEuropeWinterT = {"CET ", Last, Sun, Oct, 3,  60}; // Central European Standard Time
-Timezone myTimeZone(CentralEuropeSummerT, CentralEuropeWinterT);
-TimeChangeRule* currentCR;
 
 
 
@@ -28,6 +26,8 @@ public:
 private:
   WiFiUDP ntpUDP;
   NTPClient timeClient;
+
+
 
   bool m_couldUpdate;
 

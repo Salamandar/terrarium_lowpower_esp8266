@@ -4,6 +4,9 @@
 #include <ArduinoJson.h>
 #include <stdio.h>
 #include <ESP8266HTTPClient.h>
+Timezone myTimeZone(CentralEuropeSummerT, CentralEuropeWinterT);
+
+TimeChangeRule* currentCR;
 
 time_t utcToLocal(time_t utc) {
   return myTimeZone.toLocal(utc, &currentCR);

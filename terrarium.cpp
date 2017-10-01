@@ -103,9 +103,3 @@ void Terrarium::setTapis(bool on) {
 void Terrarium::setLampe(bool on) {
   digitalWrite(LampePin, on ? LOW : HIGH);
 }
-
-
-Terrarium* terrarium = 0;
-void terra_setup() {
-  terrarium = new Terrarium();
-}

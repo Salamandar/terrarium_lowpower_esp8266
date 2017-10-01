@@ -61,9 +61,3 @@ private:
 
 
 };
-
-// Unique instance, not initialized by default
-extern
-Terrarium* terrarium;
-// Initializes the ptr
-void terra_setup();
