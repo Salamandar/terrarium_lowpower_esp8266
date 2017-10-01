@@ -1,4 +1,5 @@
 #include "terrarium.h"
+#include "datetime.h"
 
 #include <ESP8266WiFi.h>
 #include <ESP8266WebServer.h>
@@ -13,6 +14,10 @@ const char* password = "avalonisinbroceliande";
 //const char* privateKey = "....................";
 
 ESP8266WebServer server(80);
+DateTime timeupdater;
+SunSetTime sunsettimeupdater(45.1855779, 5.6996643);
+Terrarium terrarium;
+
 
 void setup() {
   Serial.begin(115200);
@@ -41,9 +46,10 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   Serial.println("HTTP server started");
+  Serial.println();
 
-  // while(!time_loop()) {};
-  terra_setup();
+  timeupdater.forceUpdate();
+  terrarium.detectDS18B20();
 
 
   // Force the ESP into client-only mode
@@ -60,13 +66,13 @@ void loop() {
 
   // WiFi.forceSleepBegin();
   WiFi.setSleepMode(WIFI_LIGHT_SLEEP);
-  delay(60*1000);
+  delay(1000);
 }
 
 
 void handleRoot() {
   String serverResponse;
-  serverResponse +=  "<h1>You are connected to the esp8266 !</h1><p>It is " + String(hour()) + ":" + String(minute()) + ":" + String(second()) + ", and this is the " + (isDay() ? "day" : "night") + ".</p>";
+  serverResponse +=  "<h1>You are connected to the esp8266 !</h1><p>It is " + String(hour()) + ":" + String(minute()) + ":" + String(second()) + ", and this is the " + (sunsettimeupdater.isDay(now()) ? "day" : "night") + ".</p>";
 
 
 
